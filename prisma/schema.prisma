@@ -8,8 +8,9 @@ datasource db {
 }
 
 model Admin {
-  id     String   @id @default(uuid())
-  client Client[]
+  id      String   @id @default(uuid())
+  adminId String
+  client  Client[]
 }
 
 model Client {
