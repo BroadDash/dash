@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
-import { ModalProvider } from "@/providers/modal-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -35,7 +35,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
-          <ModalProvider />
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

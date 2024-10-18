@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(newClient);
   } catch (error) {
-    console.log("[COURSES]", error);
+    console.log("[Client]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

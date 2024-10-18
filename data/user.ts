@@ -1,10 +1,16 @@
 import { db } from "@/lib/db";
 
-export const getClient = async (email: string) => {
+interface GetClientProps {
+  email: string;
+  phone: string;
+}
+
+export const getClient = async ({ email, phone }: GetClientProps) => {
   try {
-    const client = await db.client.findUnique({
+    const client = await db.client.findFirst({
       where: {
         email,
+        phone,
       },
     });
     return client;

@@ -19,6 +19,7 @@ export const AdminProfile = async () => {
 
   if (!existingAdmin) {
     const newAdminProfile = await db.admin.create({
+      //@ts-ignore
       data: {
         id: admin.id,
       },

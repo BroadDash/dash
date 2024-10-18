@@ -7,8 +7,8 @@ export const CreateClientSchema = z.object({
   phone: z.string().min(9, {
     message: "Enter a valid number",
   }),
-  email: z.string().min(1, {
-    message: "This field cannot be empty",
+  email: z.string().email({
+    message: "Please enter a valid email address",
   }),
   address: z.string().min(1, {
     message: "This field cannot be empty",

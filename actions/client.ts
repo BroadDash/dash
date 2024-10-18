@@ -1,6 +1,8 @@
 "use server";
 
-import { error } from "console";
+import { redirect } from "next/navigation";
+
+import { auth } from "@clerk/nextjs/server";
 import * as z from "zod";
 
 import { getClient } from "@/data/user";
@@ -10,6 +12,12 @@ import { CreateClientSchema } from "@/schemas";
 export const CreateClient = async (
   values: z.infer<typeof CreateClientSchema>
 ) => {
+  const admin = auth();
+
+  if (!admin) {
+    return { error: "Unauthorised" };
+  }
+  
   const validationFields = CreateClientSchema.safeParse(values);
 
   if (!validationFields.success) {
@@ -18,10 +26,10 @@ export const CreateClient = async (
 
   const { address, email, name, phone } = validationFields.data;
 
-  const existingClient = await getClient(phone);
+  const existingClient = await getClient({ email, phone });
 
   if (existingClient) {
-    return { error: "Client already exists on this phone" };
+    return { error: "Client exists" };
   }
 
   const client = await db.client.create({
@@ -33,5 +41,5 @@ export const CreateClient = async (
     },
   });
 
-  return client.id;
+  redirect(`/client/${client.id}`);
 };

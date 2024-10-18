@@ -4,38 +4,29 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { register } from "module";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import * as z from "zod";
 
 import { CreateClient } from "@/actions/client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CreateClientSchema } from "@/schemas";
 
 export const CreateClientModal = () => {
-  const formSchema = CreateClientSchema;
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+  const formSchema = CreateClientSchema;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +40,9 @@ export const CreateClientModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     CreateClient(values).then((data) => {
-      router.push(`/client/${data}`);
+      if (data.error) {
+        toast.error("Client already exists!");
+      }
     });
   };
 
